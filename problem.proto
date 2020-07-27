@@ -19,7 +19,7 @@ message ProblemEnvelope {
     
     required string type = 1;                       // The model type: i.e. "tsp-mcvfz472gty6"
     required SubType subType = 2 [default = INPUT]; // The subtype: INPUT for sending a model to the api
-    optional bytes content = 3;                     // The serialised model content, see https://github.com/Icepack-co/examples
+    optional bytes content = 3;                     // The serialised model content (INPUT), or a SolverResponse (OUTPUT), see https://github.com/Icepack-co/examples
 }
 
 // Defines a message type returned in the logs from the solver (see parent structure below)
