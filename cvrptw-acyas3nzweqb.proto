@@ -1,5 +1,5 @@
 syntax = "proto2";
-
+option java_package = "icepackai.CVRPTW";
 // This package deals with Capacitated Vehicle Routing Problems With Time Windows
 // Using either straight line, Haversine, or Roadnetwork distances
 // The objective is to minimise the cost of visitng all points within
