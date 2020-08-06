@@ -82,7 +82,7 @@ message DimensionRange {
 // https://docs.icepack.ai/ns3/node/
 message Node {
   message ProductFlow {
-    required string id = 1;
+    required string productId = 1;
     repeated DimensionRange dimensionRanges = 2;
     repeated FixedDimensionCost FixedDimensionCosts = 3;
     repeated UnitDimensionCost unitDimensionCosts = 4; // individual factoring and costs per dimension.
@@ -139,13 +139,12 @@ message LaneRate {
 // https://docs.icepack.ai/ns3/cost-model/
 message CostModel {
   required string id = 1;
-  required string source = 3;
-  optional string destination = 4; // when destination is optional, 
-                                   // edges are created to all nodes that have an OUT node attribute
-  repeated string productGroupIds = 5; // cost models only work with product groups.
-  repeated UnitDimensionCost unitDimensionCost = 6;
-  repeated FlowDimensionalConstraint flowConstraints = 7;
+  required string source = 2;
+  repeated string productGroupIds = 3; // cost models only work with product groups.
+  repeated UnitDimensionCost unitDimensionCost = 4;
+  repeated FlowDimensionalConstraint flowConstraints = 5;
 }
+
 
 // https://docs.icepack.ai/ns3/model/
 message Model {
