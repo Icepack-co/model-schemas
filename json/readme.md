@@ -19,8 +19,8 @@ To see a list of supported client languages just type:
 java -jar swagger-codegen-cli.jar langs
 ```
 
-One can also use the `openapi-generator-cli.jar` (available (here)[https://github.com/OpenAPITools/openapi-generator]) to validate the specification if you require.
+One can also use the `openapi-generator-cli.jar` (available [here](https://github.com/OpenAPITools/openapi-generator)) to validate the specification if you require.
 
 ## Working with the models
 
-Once you have generated the objects in your target langauge, feel free to check out the (Icepack Documentation Site)[https://docs.icepack.ai] which contains examples of how to build models and the interpretation of the object fields in their respective contexts.
+Once you have generated the objects in your target langauge, feel free to check out the [Icepack Documentation Site](https://docs.icepack.ai) which contains examples of how to build models and the interpretation of the object fields in their respective contexts.
