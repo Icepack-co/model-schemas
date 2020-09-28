@@ -1,0 +1,123 @@
+TSPTW.Geocode:
+  type: object
+  required:
+  - id
+  - x
+  - y
+  properties:
+    id:
+      type: string
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+    windowStart:
+      type: number
+      format: float
+    windowEnd: 
+      type: number
+      format: float
+
+TSPTW.Model:
+  type: object
+  properties:
+    points: 
+      type: array
+      items:
+        $ref: '#/TSPTW.Geocode'
+    eDistanceType:
+        type: string
+        enum: ["RoadNetwork", "Euclidean", "Haversine"]
+        default: "RoadNetwork"
+
+TSPTW.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/TSPTW.Model'
+
+TSPTW.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/TSPTW.Model'
+    modelID:
+      type: string
+    visitSequence:
+      type: array
+      items:
+        type: string
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+TSPTW.Edge:
+  type: object
+  required:
+    - from
+    - to
+  properties:
+    from:
+      type: string
+    to:
+      type: string
+    distance:
+      type: number
+      format: float
+    time:
+      type: number
+      format: float
+    geometry:
+      type: array
+      items:
+        $ref: '#/TSPTW.Edge.Geometry'
+
+TSPTW.Edge.Geometry:
+  type: object
+  required:
+  - x
+  - y
+  properties:
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+
+TSPTW.Solution:
+  type: object
+  properties:
+    tour:
+      type: array
+      items:
+        type: string
+    edges:
+      type: array
+      items:
+        $ref: '#/TSPTW.Edge'
+    arrivalTimes:
+      type: array
+      items:
+        type: number
+        format: float
+
+TSPTW.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/TSPTW.Solution'

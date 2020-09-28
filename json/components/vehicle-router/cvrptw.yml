@@ -1,0 +1,151 @@
+CVRPTW.Geocode:
+  type: object
+  required:
+    - id
+    - x
+    - y
+    - quantity
+  properties:
+    id:
+      type: string
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+    quantity:
+      type: number
+      format: float
+    windowStart:
+      type: number
+      format: float
+    windowEnd:
+      type: number
+      format: float
+
+CVRPTW.Model:
+  type: object
+  required:
+    - NumberOfVehicles
+    - VehicleCapacity
+  properties:
+    points: 
+      type: array
+      items:
+        $ref: '#/CVRPTW.Geocode'
+    depot:
+      $ref: '#/CVRPTW.Geocode'
+    NumberOfVehicles:
+      type: integer
+      format: int32
+    VehicleCapacity:
+      type: number
+      format: float
+    distancetype:
+      type: string
+      enum: ["RoadNetwork", "Euclidean", "Haversine"]
+      default: "RoadNetwork"
+
+CVRPTW.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/CVRPTW.Model'
+
+CVRPTW.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/CVRPTW.Model'
+    modelID:
+      type: string
+    visitSequence:
+      type: array
+      items:
+        type: string
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+CVRPTW.Edge:
+  type: object
+  required:
+    - from
+    - to
+  properties:
+    from:
+      type: string
+    to:
+      type: string
+    distance:
+      type: number
+      format: float
+    geometry:
+      type: array
+      items:
+        $ref: '#/CVRPTW.Edge.Geometry'
+
+CVRPTW.Edge.Geometry:
+  type: object
+  required:
+  - x
+  - y
+  properties:
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+
+CVRPTW.Route:
+  type: object
+  properties:
+    sequence:
+      type: array
+      items:
+        type: string
+    edges:
+      type: array
+      items:
+        $ref: '#/CVRPTW.Edge'
+    visitCapacities:
+      type: array
+      items:
+        type: number
+        format: float
+    arrivalTimes:
+      type: array
+      items:
+        type: number
+        format: float
+
+CVRPTW.Solution:
+  type: object
+  properties:
+    routes:
+      type: array
+      items:
+        $ref: '#/CVRPTW.Route'
+    objective:
+      type: number
+      format: float
+
+CVRPTW.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/CVRPTW.Solution'

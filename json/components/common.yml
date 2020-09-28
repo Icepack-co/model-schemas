@@ -1,0 +1,23 @@
+requestGuid:
+  type: object
+  required:
+  - requestid
+  properties:
+    requestid:
+      type: string
+
+SolverInfo:
+  type: object
+  required:
+    - unixDateTime
+    - infoMessage
+    - type
+  properties:
+    unixDateTime:
+      type: integer
+      format: int64
+    infoMessage:
+      type: string
+    type:
+      type: string
+      enum: ["INFO", "WARNING", "ERROR"]

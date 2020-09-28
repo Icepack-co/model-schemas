@@ -1,0 +1,140 @@
+CVRP.Geocode:
+  type: object
+  required:
+    - id
+    - x
+    - y
+    - quantity
+  properties:
+    id:
+      type: string
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+    quantity:
+      type: number
+      format: float
+
+CVRP.Model:
+  type: object
+  required:
+    - NumberOfVehicles
+    - VehicleCapacity
+  properties:
+    points: 
+      type: array
+      items:
+        $ref: '#/CVRP.Geocode'
+    depot:
+      $ref: '#/CVRP.Geocode'
+    NumberOfVehicles:
+      type: integer
+      format: int32
+    VehicleCapacity:
+      type: number
+      format: float
+    distancetype:
+      type: string
+      enum: ["RoadNetwork", "Euclidean", "Haversine"]
+      default: "RoadNetwork"
+
+CVRP.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/CVRP.Model'
+
+CVRP.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/CVRP.Model'
+    modelID:
+      type: string
+    visitSequence:
+      type: array
+      items:
+        type: string
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+CVRP.Edge:
+  type: object
+  required:
+    - from
+    - to
+  properties:
+    from:
+      type: string
+    to:
+      type: string
+    distance:
+      type: number
+      format: float
+    geometry:
+      type: array
+      items:
+        $ref: '#/CVRP.Edge.Geometry'
+
+CVRP.Edge.Geometry:
+  type: object
+  required:
+  - x
+  - y
+  properties:
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+
+CVRP.Route:
+  type: object
+  properties:
+    sequence:
+      type: array
+      items:
+        type: string
+    edges:
+      type: array
+      items:
+        $ref: '#/CVRP.Edge'
+    visitCapacities:
+      type: array
+      items:
+        type: number
+        format: float
+
+CVRP.Solution:
+  type: object
+  properties:
+    routes:
+      type: array
+      items:
+        $ref: '#/CVRP.Route'
+    objective:
+      type: number
+      format: float
+
+CVRP.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/CVRP.Solution'

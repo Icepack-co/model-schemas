@@ -1,0 +1,715 @@
+openapi: 3.0.0
+info:
+  title: Icepack API Specification
+  description: The Icepack API solves discrete optimisation problems. For more info check out https://docs.icepack.ai
+  version: 0.0.1
+
+servers:
+  - url: https://api.icepack.ai
+    description: Production server
+  - url: https://api.test.icepack.ai
+    description: Test server, limited access for Enterprise customers.
+
+paths:
+  /vehicle-router/solve/tsp-mcvfz472gty6:
+    post:
+      description: Submits a solve request for a tsp model to the api
+      operationId: post tsp-mcvfz472gty6
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/TSP/tsp.yml#/TSP.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  
+  /vehicle-router/solve/tsp-mcvfz472gty6/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a TSP model submitted.
+      operationId: get tsp-mcvfz472gty6
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted tsp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/TSP/tsp.yml#/TSP.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/tsp-mcvfz472gty6/model:
+    post:
+      description: Sends a data model for use in a future TSP solve request to the api
+      operationId: post model data tsp-mcvfz472gty6
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/TSP/tsp.yml#/TSP.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/tsptw-kcxbievqo879:
+    post:
+      description: Sends a solve request for a tsptw model to the api
+      operationId: post tsptw-kcxbievqo879
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/TSPTW/tsptw.yml#/TSPTW.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/tsptw-kcxbievqo879/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a TSP model submitted.
+      operationId: get tsptw-kcxbievqo879
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted tsptw payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/TSPTW/tsptw.yml#/TSPTW.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+   
+  /vehicle-router/data/tsptw-kcxbievqo879/model:
+    post:
+      description: Sends a data model for use in a future TSPTW solve request to the api
+      operationId: post model data tsptw-kcxbievqo879
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/TSPTW/tsptw.yml#/TSPTW.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+ 
+  /vehicle-router/solve/cvrp-jkfdoctmp51n:
+    post:
+      description: Sends a solve request for a cvrp model to the api
+      operationId: post cvrp-jkfdoctmp51n
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/CVRP/cvrp.yml#/CVRP.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/cvrp-jkfdoctmp51n/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a CVRP model submitted.
+      operationId: get cvrp-jkfdoctmp51n
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/CVRP/cvrp.yml#/CVRP.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/cvrp-jkfdoctmp51n/model:
+    post:
+      description: Sends a data model for use in a future CVRP solve request to the api
+      operationId: post model data cvrp-jkfdoctmp51n
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/CVRP/cvrp.yml#/CVRP.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/cvrptw-acyas3nzweqb:
+    post:
+      description: Sends a solve request for a CVRPTW model to the api
+      operationId: post cvrptw-acyas3nzweqb
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/cvrptw-acyas3nzweqb/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a CVRPTW model submitted.
+      operationId: get cvrptw-acyas3nzweqb
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/cvrptw-acyas3nzweqb/model:
+    post:
+      description: Sends a data model for use in a future CVRPTW solve request to the api
+      operationId: post model data cvrptw-acyas3nzweqb
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /matrix/matrix-vyv95n7wchpl:
+    post:
+      description: Sends a solve request for a Matrix model to the api
+      operationId: post matrix-vyv95n7wchpl
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/Matrix/matrix.yml#/Matrix.Request'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /matrix/matrix-vyv95n7wchpl/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a Matrix model submitted.
+      operationId: get matrix-vyv95n7wchpl
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted matrix payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/Matrix/matrix.yml#/Matrix.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/ivr7-kt461v8eoaif:
+    post:
+      description: Sends a solve request for a IVR7 model to the api
+      operationId: post ivr7-kt461v8eoaif
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR7/ivr7.yml#/IVR7.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/ivr7-kt461v8eoaif/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a IVR7 model submitted.
+      operationId: get ivr7-kt461v8eoaif
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/IVR7/ivr7.yml#/IVR7.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/ivr7-kt461v8eoaif/model:
+    post:
+      description: Sends a data model for use in a future IVR7 solve request to the api
+      operationId: post model data ivr7-kt461v8eoaif
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR7/ivr7.yml#/IVR7.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/ivr7-kt461v8eoaif/transitset:
+    post:
+      description: Sends a set of transit data for use in a future IVR7 model to the api
+      operationId: post transit set data ivr7-kt461v8eoaif
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR7/ivr7.yml#/IVR7.CachedTransitSet'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/ivr8-yni1c9k2swof:
+    post:
+      description: Sends a solve request for a IVR8 model to the api
+      operationId: post ivr8-yni1c9k2swof
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR8/ivr8.yml#/IVR8.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/ivr8-yni1c9k2swof/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a IVR8 model submitted.
+      operationId: get ivr8-yni1c9k2swof
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/IVR8/ivr8.yml#/IVR8.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/ivr8-yni1c9k2swof/model:
+    post:
+      description: Sends a data model for use in a future IVR8 solve request to the api
+      operationId: post model data ivr8-yni1c9k2swof
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR8/ivr8.yml#/IVR8.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/ivr8-yni1c9k2swof/transitset:
+    post:
+      description: Sends a set of transit data for use in a future IVR8 model to the api
+      operationId: post transit set data ivr8-yni1c9k2swof
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/IVR8/ivr8.yml#/IVR8.CachedTransitSet'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/nvd-hap0j2y4zlm1:
+    post:
+      description: Sends a solve request for a NVD model to the api
+      operationId: post /nvd-hap0j2y4zlm1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/NVD/nvd.yml#/NVD.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/nvd-hap0j2y4zlm1/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a NVD model submitted.
+      operationId: get nvd-hap0j2y4zlm1
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/NVD/nvd.yml#/NVD.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/nvd-hap0j2y4zlm1/model:
+    post:
+      description: Sends a data model for use in a future NVD solve request to the api
+      operationId: post model data nvd-hap0j2y4zlm1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/NVD/nvd.yml#/NVD.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /network-sourcing/solve/ns3-tbfvuwtge2iq:
+    post:
+      description: Sends a solve request for a NS3 model to the api
+      operationId: post /ns3-tbfvuwtge2iq
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/NS3/ns3.yml#/NS3.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /network-sourcing/solve/ns3-tbfvuwtge2iq/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a NS3 model submitted.
+      operationId: get ns3-tbfvuwtge2iq
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/NS3/ns3.yml#/NS3.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /network-sourcing/data/ns3-tbfvuwtge2iq/model:
+    post:
+      description: Sends a data model for use in a future NS3 solve request to the api
+      operationId: post model data ns3-tbfvuwtge2iq
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/NS3/ns3.yml#/NS3.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+components:
+  schemas:
+    Error:
+      required:
+      - code
+      - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header      
+      name: Apitoken
+
+security:
+  - ApiKeyAuth: []
+      

@@ -1,0 +1,548 @@
+
+NS3.InternalDimension:
+  type: object
+  required: 
+    - id
+    - measurementUnit
+  properties:
+    id:
+      type: string
+    measurementUnit:
+      type: string
+      enum: ["SECONDS", "MINUTES", "HOURS", "DAYS", "KILOMETRES", "MILES"]
+
+NS3.UserDimension:
+  type: object
+  required:
+    - id
+    - units
+  properties:
+    id:
+      type: string
+    units: 
+      type: string
+
+NS3.DimensionConfiguration:
+  type: object
+  properties:
+    timeConfig:
+      $ref: '#/NS3.InternalDimension'
+    distanceConfig:
+      $ref: '#/NS3.InternalDimension'
+    userDimensions: 
+      type: array
+      items:
+        $ref: '#/NS3.UserDimension'
+
+NS3.Geocode:
+  type: object
+  required:
+    - longitude
+    - latitude
+  properties:
+    longitude:
+      type: number
+      format: float
+    latitude:
+      type: number
+      format: float
+
+NS3.UnitDimensionCost:
+  type: object
+  required:
+    - costPerUnit
+  properties:
+    dimensionIds:
+      type: array
+      items:
+        type: string
+    dimensionCoefficients:
+      type: array
+      items:
+        type: number
+        format: float
+    costPerUnit:
+      type: number
+      format: float
+
+NS3.FixedDimensionCost:
+  type: object
+  required:
+    - fixedCost
+  properties:
+    dimensionIds:
+      type: array
+      items:
+        type: string
+    fixedCost:
+      type: number
+      format: float
+
+NS3.FlowDimensionalConstraint:
+  type: object
+  required:
+    - flowMin
+    - flowMax
+  properties:
+    dimensionIds:
+      type: array
+      items:
+        type: string
+    dimensionCoefficients:
+      type: array
+      items:
+        type: number
+        format: float
+    flowMin:
+      type: number
+      format: float
+    flowMax:
+      type: number
+      format: float
+
+NS3.DimensionRange:
+  type: object
+  required:
+    - dimensionId
+    - minRange
+    - maxRange
+    - flowPenalty
+  properties:
+    dimensionId:
+      type: string
+    minRange:
+      type: number
+      format: float
+    maxRange:
+      type: number
+      format: float
+    flowPenalty:
+      type: number
+      format: float
+
+NS3.Node.ProductFlow:
+  type: object
+  required:
+    - productId
+  properties:
+    productId:
+      type: string
+    dimensionRanges:
+      type: array
+      items:
+        $ref: '#/NS3.DimensionRange'
+    FixedDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.FixedDimensionCost'
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+
+NS3.Node.Flow:
+  type: object
+  properties:
+    dimensionRanges:
+      type: array
+      items:
+        $ref: '#/NS3.DimensionRange'
+    FixedDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.FixedDimensionCost'
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+
+NS3.Node:
+  type: object
+  required:
+    - id
+    - geocode
+  properties:
+    id:
+      type: string
+    geocode:
+      $ref: '#/NS3.Geocode' 
+    production:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductFlow'
+    consumption:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductFlow'
+    flow:
+      $ref: '#/NS3.Node.Flow'
+    productFlows:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductFlow'
+    allowableSources:
+      type: array
+      items:
+        type: string
+    maximumSources:
+      type: integer
+      format: int32
+      default: -1 # unconstrained
+    flowConstraints:
+      type: array
+      items:
+        $ref: '#/NS3.FlowDimensionalConstraint'
+
+NS3.ProductSpecification:
+  type: object
+  required:
+    - baseDimension
+  properties:
+    baseDimension:
+      type: string
+    targetDimension:
+      type: array
+      items:
+        type: string
+    targetPerBase:
+      type: array
+      items:
+        type: number
+        format: float
+
+NS3.ProductGroup:
+  type: object
+  required:
+    - productId
+    - productGroupId
+  properties:
+    productId:
+      type: string
+    productGroupId:
+      type: string
+    productSpecification:
+      type: array
+      items:
+        $ref: '#/NS3.ProductSpecification'
+
+NS3.LaneRate:
+  type: object
+  required:
+    - id
+    - source
+    - destination
+  properties:
+    id:
+      type: string
+    source:
+      type: string
+    destination:
+      type: string
+    productIds:
+      type: array
+      items:
+        type: string
+    productGroupIds:
+      type: array
+      items:
+        type: string
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+    flowConstraints:
+      type: array
+      items:
+        $ref: '#/NS3.FlowDimensionalConstraint'
+
+
+NS3.CostModel:
+  type: object
+  required:
+    - id
+    - source
+  properties:
+    id:
+      type: string
+    source:
+      type: string
+    productGroupIds:
+      type: array
+      items:
+        type: string
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+    flowConstraints:
+      type: array
+      items:
+        $ref: '#/NS3.FlowDimensionalConstraint'
+
+NS3.Model:
+  type: object
+  required:
+    - dimensions
+  properties:
+    dimensions:
+      $ref: '#/NS3.DimensionConfiguration'
+    nodes:
+      type: array
+      items: 
+        $ref: '#/NS3.Node'
+    laneRates:
+      type: array
+      items:
+        $ref: '#/NS3.LaneRate'
+    costModels:
+      type: array
+      items:
+        $ref: '#/NS3.CostModel'
+    productGroups:
+      type: array
+      items:
+        $ref: '#/NS3.ProductGroup'
+
+
+NS3.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/NS3.Model'
+
+NS3.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/NS3.Model'
+    modelID:
+      type: string
+    solveType:
+      type: string
+      enum: ["Optimise"] # this is structurally here to accommodate new functionality
+      default: "Optimise"
+    geometryOutput:
+      type: string
+      enum: ["NONE", "AGGREGATE"]
+
+NS3.SolutionResponse.Assignment:
+  type: object
+  required:
+    - source
+    - destination
+    - productId
+    - amount
+    - cost
+    - distance
+    - duration
+  properties:
+    source:
+      type: string
+    destination:
+      type: string
+    productId:
+      type: string
+    amount:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+    laneRateId:
+      type: string
+    costModelId:
+      type: string
+    distance:
+      type: number
+      format: float
+    duration:
+      type: number
+      format: float
+
+NS3.SolutionResponse.NodeProductFlow:
+  type: object
+  required:
+    - nodeId
+    - productId
+    - inFlow
+    - outFlow
+    - flowCost
+    - fixedCost
+    - productionAmount
+    - productionPenalty
+    - productionCost
+    - consumptionAmount
+    - consumptionPenalty
+    - consumptionCost
+  properties:
+    nodeId:
+      type: string
+    productId:
+      type: string
+    inFlow:
+      type: number
+      format: float
+    outFlow:
+      type: number
+      format: float
+    flowCost:
+      type: number
+      format: float
+    fixedCost:
+      type: number
+      format: float
+    productionAmount:
+      type: number
+      format: float
+    productionPenalty:
+      type: number
+      format: float
+    productionCost:
+      type: number
+      format: float
+    consumptionAmount:
+      type: number
+      format: float
+    consumptionPenalty:
+      type: number
+      format: float
+    consumptionCost:
+      type: number
+      format: float
+
+NS3.SolutionResponse.NodeFlow:
+  type: object
+  required:
+    - nodeId
+    - inFlow
+    - outFlow
+    - flowCost
+    - fixedCost
+    - productFlowCost
+    - productFixedCost
+    - productionAmount
+    - productionPenalty
+    - productionCost
+    - consumptionAmount
+    - consumptionPenalty
+    - consumptionCost
+  properties:
+    nodeId:
+      type: string
+    inFlow:
+      type: number
+      format: float
+    outFlow:
+      type: number
+      format: float
+    flowCost:
+      type: number
+      format: float
+    fixedCost:
+      type: number
+      format: float
+    productFlowCost:
+      type: number
+      format: float
+    productFixedCost:
+      type: number
+      format: float
+    productionAmount:
+      type: number
+      format: float
+    productionPenalty:
+      type: number
+      format: float
+    productionCost:
+      type: number
+      format: float
+    consumptionAmount:
+      type: number
+      format: float
+    consumptionPenalty:
+      type: number
+      format: float
+    consumptionCost:
+      type: number
+      format: float
+
+NS3.SolutionResponse.GeometrySequence:
+  type: object
+  properties:
+    x:
+      type: array
+      items:
+        type: number
+        format: float
+    y:
+      type: array
+      items:
+        type: number
+        format: float
+
+NS3.SolutionResponse.Route:
+  required:
+    - fromId
+    - toId
+  properties:
+    fromId:
+      type: string
+    toId:
+      type: string
+    geometrySequence:
+      type: array
+      items:
+        type: integer
+        format: int32
+
+NS3.SolutionResponse:
+  type: object
+  required:
+    - objective
+  properties:
+    objective:
+      type: number
+      format: float
+    lowerBound:
+      type: number
+      format: float
+    optimalityGap:
+      type: number
+      format: float
+    assignments:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.Assignment'
+    nodeFlows:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeFlow'
+    nodeProductFlows:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeProductFlow'
+    geometrySequence:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.GeometrySequence'
+    routes:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.Route'
+
+NS3.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/NS3.SolutionResponse'

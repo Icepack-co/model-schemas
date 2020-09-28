@@ -1,0 +1,836 @@
+
+IVR8.InternalDimension:
+  type: object
+  required: 
+    - id
+    - measurementUnit
+  properties:
+    id:
+      type: string
+    measurementUnit:
+      type: string
+      enum: ["SECONDS", "MINUTES", "HOURS", "DAYS", "KILOMETRES", "MILES"]
+    slackMax:
+      type: number
+      format: float
+      default: 0
+    tardyMax:
+      type: number
+      format: float
+      default: 0
+
+IVR8.CapacityDimension:
+  type: object
+  required:
+    - id
+    - units
+  properties:
+    id:
+      type: string
+    units:
+      type: string
+    slackMax:
+      type: number
+      format: float
+      default: 0
+    tardyMax:
+      type: number
+      format: float
+      default: 0
+
+IVR8.DimensionConfiguration:
+  type: object
+  properties:
+    timeConfig:
+      $ref: '#/IVR8.InternalDimension'
+    distanceConfig:
+      $ref: '#/IVR8.InternalDimension'
+    capacityDimensions: 
+      type: array
+      items:
+        $ref: '#/IVR8.CapacityDimension'
+
+IVR8.Geocode:
+  type: object
+  required:
+    - longitude
+    - latitude
+  properties:
+    longitude:
+      type: number
+      format: float
+    latitude:
+      type: number
+      format: float
+
+IVR8.Window:
+  type: object
+  required:
+    - start
+    - end
+  properties:
+    start:
+      type: number
+      format: float
+    end:
+      type: number
+      format: float
+    slackCostCoef:
+      type: number
+      format: float
+      default: 0
+    tardyCostCoef:
+      type: number
+      format: float
+      default: 0
+    slackMax:
+      type: number
+      format: float
+      default: -1
+    tardyMax:
+      type: number
+      format: float
+      default: -1
+
+IVR8.Location.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    vehicleId:
+      type: string
+    quantity:
+      type: number
+      format: float
+      default: 0
+    arrivalWindows: 
+      type: array
+      items:
+        $ref: '#/IVR8.Window'
+    departureWindows: 
+      type: array
+      items:
+        $ref: '#/IVR8.Window'
+
+IVR8.Location:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    geocode:
+      $ref: '#/IVR8.Geocode'
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.Location.Attribute'
+
+IVR8.Job.VehicleRelation:
+  type: object
+  required:
+    - type
+  properties:
+    type: 
+      type: string
+      enum: ["INCLUSIVE", "EXCLUSIVE"]
+    vehicleIds: 
+      type: array
+      items:
+        type: string
+
+IVR8.Job.CompartmentRelation:
+  type: object
+  required:
+    - type
+  properties:
+    type: 
+      type: string
+      enum: ["INCLUSIVE", "EXCLUSIVE"]
+    compartmentIds: 
+      type: array
+      items:
+        type: string
+
+IVR8.Job.Task.TripConstraint:
+  type: string
+  enum: ["FIRST", "LAST"]
+
+IVR8.Job.Task.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    quantity:
+      type: number
+      format: float
+      default: 0
+    windows: 
+      type: array
+      items:
+        $ref: '#/IVR8.Window'
+
+IVR8.Job.Task:
+  type: object
+  required:
+    - taskId
+    - locationId
+  properties:
+    taskId:
+      type: string
+    locationId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.Job.Task.Attribute'
+    tripConstraints:
+      type: array
+      items:
+        $ref: '#/IVR8.Job.Task.TripConstraint'
+
+IVR8.Job:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    pickupTask:
+      $ref: '#/IVR8.Job.Task'
+    dropoffTask:
+      $ref: '#/IVR8.Job.Task'
+    penalty:
+      type: number
+      format: float
+    vehicleRelations:
+      $ref: '#/IVR8.Job.VehicleRelation'
+    compartmentRelations:
+      $ref: '#/IVR8.Job.CompartmentRelation'
+
+IVR8.TransitSet.TransitValue:
+  type: object
+  required:
+    - fromId
+    - toId
+    - value
+  properties:
+    fromId:
+      type: string
+    toId:
+      type: string
+    value:
+      type: number
+      format: float
+    
+IVR8.TransitSet:
+  type: object
+  properties:
+    transits:
+      type: array
+      items:
+        $ref: '#/IVR8.TransitSet.TransitValue'
+
+IVR8.TransitGenerator:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    requestId:
+      type: string
+    transitSet:
+      $ref: '#/IVR8.TransitSet'
+
+IVR8.VehicleClass.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    transitGeneratorId:
+      type: string
+    transitCoef:
+      type: number
+      format: float
+      default: 1
+    taskCoef:
+      type: number
+      format: float
+      default: 1
+    locationCoef:
+      type: number
+      format: float
+      default: 1
+
+IVR8.VehicleClass:
+  type: object
+  required:
+    - id
+  properties:
+    id: 
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.VehicleClass.Attribute'
+    transitRuleIds:
+      type: array
+      items:
+        type: string
+    compartmentSetId:
+      type: string
+
+IVR8.VehicleCostClass.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    transitCostCoef:
+      type: number
+      format: float
+      default: 0
+    taskCostCoef:
+      type: number
+      format: float
+      default: 0
+    locationCostCoef:
+      type: number
+      format: float
+      default: 0
+    slackCostCoef:
+      type: number
+      format: float
+      default: 0
+    tardyCostCoef:
+      type: number
+      format: float
+      default: 0
+
+IVR8.VehicleCostClass:
+  type: object
+  required:
+    - id
+    - fixedCost
+  properties:
+    id:
+      type: string
+    fixedCost:
+      type: number
+      format: float
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.VehicleCostClass.Attribute'
+
+IVR8.Compartment.Capacity:
+  type: object
+  required:
+    - dimensionId
+    - capacity
+  properties:
+    dimensionId:
+      type: string
+    capacity:
+      type: number
+      format: float
+
+IVR8.Compartment:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    capacitites:
+      type: array
+      items:
+        $ref: '#/IVR8.Compartment.Capacity'
+
+IVR8.CompartmentSet.GroupLimit:
+  type: object
+  required:
+    - dimensionId
+    - limit
+  properties:
+    compartmentIds:
+      type: array
+      items:
+        type: string
+    coefficients:
+      type: array
+      items:
+        type: number
+        format: float
+    dimensionId:
+      type: string
+    limit:
+      type: number
+      format: float
+    checkStandingState:
+      type: boolean
+      default: false
+
+IVR8.CompartmentSet:
+  type: object
+  required:
+    - id
+  properties:
+    id: 
+      type: string
+    compartmentIds:
+      type: array
+      items:
+        type: string    
+    groupLimits:
+      type: array
+      items:
+        $ref: '#/IVR8.CompartmentSet.GroupLimit'
+    
+IVR8.Vehicle.Task.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    quantity:
+      type: number
+      format: float
+    windows:
+      type: array
+      items:
+        $ref: '#/IVR8.Window'
+
+IVR8.Vehicle.Task:
+  type: object
+  required:
+    - locationId
+  properties:
+    locationId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.Vehicle.Task.Attribute'
+      
+IVR8.Vehicle.Shift:
+  type: object
+  required:
+    - shiftStart
+  properties:
+    shiftStart:
+      $ref: '#/IVR8.Vehicle.Task'
+    shiftEnd:
+      $ref: '#/IVR8.Vehicle.Task'
+
+IVR8.Vehicle.Capacity:
+  type: object
+  required:
+    - dimensionId
+    - capacity
+  properties:
+    dimensionId:
+      type: string
+    capacity:
+      type: number
+      format: float
+
+IVR8.Vehicle:
+  type: object
+  required:
+    - id
+    - classId
+    - costClassId
+    - shift
+  properties:
+    id:
+      type: string
+    classId:
+      type: string
+    costClassId:
+      type: string
+    shift:
+      $ref: '#/IVR8.Vehicle.Shift'
+    capacitites:
+      type: array
+      items:
+        $ref: '#/IVR8.Vehicle.Capacity'
+    transitRuleIds:
+      type: array
+      items:
+        type: string
+    compartmentSetId:
+      type: string
+
+IVR8.TaskSequence:
+  type: object
+  required:
+    - vehicleId
+  properties:
+    vehicleId:
+      type: string
+    taskId:
+      type: array
+      items:
+        type: string
+    compartmentId:
+      type: array
+      items:
+        type: string
+
+IVR8.TransitRule.Trigger:
+  type: object
+  required:
+    - value
+    - quantity
+  properties:
+    value: 
+      type: number
+      format: float
+    quantity:
+      type: number
+      format: float
+
+IVR8.TransitRule:
+  type: object
+  required:
+    - id
+    - dimensionId
+    - ruleIdPrefix
+  properties:
+    id:
+      type: string
+    dimensionId:
+      type: string
+    useStandingState:
+      type: boolean
+      default: true
+    useTransitState:
+      type: boolean
+      default: false
+    ruleIdPrefix:
+      type: string
+    triggers:
+      type: array
+      items:
+        $ref: '#/IVR8.TransitRule.Trigger'
+
+
+IVR8.Model:
+  type: object
+  required:
+    - dimensions
+  properties:
+    dimensions: 
+      $ref: '#/IVR8.DimensionConfiguration'
+    locations:
+      type: array
+      items: 
+        $ref: '#/IVR8.Location'
+    jobs:
+      type: array
+      items: 
+        $ref: '#/IVR8.Job'
+    vehicles:
+      type: array
+      items: 
+        $ref: '#/IVR8.Vehicle'
+    vehicleClasses:
+      type: array
+      items: 
+        $ref: '#/IVR8.VehicleClass'
+    vehicleCostClasses:
+      type: array
+      items: 
+        $ref: '#/IVR8.VehicleCostClass'
+    transitRules:
+      type: array
+      items: 
+        $ref: '#/IVR8.TransitRule'
+    transitGenerators:
+      type: array
+      items: 
+        $ref: '#/IVR8.TransitGenerator'
+    taskSequence:
+      type: array
+      items: 
+        $ref: '#/IVR8.TaskSequence'
+    compartments:
+      type: array
+      items: 
+        $ref: '#/IVR8.Compartment'
+    compartmentSets:
+      type: array
+      items: 
+        $ref: '#/IVR8.CompartmentSet'
+    
+IVR8.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/IVR8.Model'
+    modelID:
+      type: string
+    routes:
+      type: array
+      items:
+        $ref: '#/IVR8.TaskSequence'
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+IVR8.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/IVR8.Model'
+
+IVR8.CachedTransitSet:
+  type: object
+  required:
+    - transitSet
+  properties:
+    transitSet:
+      $ref: '#/IVR8.TransitSet'
+
+IVR8.SolutionResponse.Infeasibility.Info:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      type: string
+    dimId:
+      type: string
+    limit:
+      type: number
+      format: float
+    value:
+      type: number
+      format: float
+    count:
+      type: integer
+      format: int64
+    constrainingTaskIds:
+      type: array
+      items:
+        type: string
+
+IVR8.SolutionResponse.Infeasibility:
+  type: object
+  required:
+    - taskId
+  properties:
+    taskId:
+      type: string
+    infeasibilityInfo:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.Infeasibility.Info'
+
+
+IVR8.SolutionResponse.Stop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+    - slackValue
+    - slackCost
+    - tardyValue
+    - tardyCost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+    slackValue:
+      type: number
+      format: float
+    slackCost:
+      type: number
+      format: float
+    tardyValue:
+      type: number
+      format: float
+    tardyCost:
+      type: number
+      format: float
+
+IVR8.SolutionResponse.Stop:
+  type: object
+  required:
+    - id
+    - sequence
+    - locationId
+    - taskId
+    - jobId
+  properties:
+    id:
+      type: integer
+      format: int32
+    sequence:
+      type: integer
+      format: int32
+    locationId:
+      type: string
+    taskId:
+      type: string
+    jobId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.Stop.Attribute'
+    compartmentId:
+      type: string
+
+IVR8.SolutionResponse.InterStop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+IVR8.SolutionResponse.InterStop:
+  type: object
+  required:
+    - fromStopId
+    - toStopId
+  properties:
+    fromStopId:
+      type: integer
+      format: int32
+    toStopId:
+      type: integer
+      format: int32
+    attributes:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.InterStop.Attribute'
+    routeSegments:
+      type: array
+      items:
+        $ref: '#/IVR8.Geocode'
+
+IVR8.SolutionResponse.TransitRuleAttribute:
+  type: object
+  required:
+    - ruleId
+    - dimId
+    - fromStopId
+    - toStopId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    ruleId:
+      type: string
+    dimId:
+      type: string
+    fromStopId:
+      type: integer
+      format: int32
+    toStopId:
+      type: integer
+      format: int32
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+IVR8.SolutionResponse.Route:
+  type: object
+  required:
+    - vehicleId
+  properties:
+    vehicleId:
+      type: string
+    stops:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.Stop'
+    interStops:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.InterStop'
+    fixedCost:
+      type: array
+      items:
+        type: number
+        format: float
+    transitRuleAttributes:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.TransitRuleAttribute'
+
+IVR8.SolutionResponse:
+  type: object
+  required:
+    - objective
+  properties:
+    objective:
+      type: number
+      format: float
+    routes:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.Route'
+    infeasibilities:
+      type: array
+      items:
+        $ref: '#/IVR8.SolutionResponse.Infeasibility'
+
+
+IVR8.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/IVR8.SolutionResponse'
