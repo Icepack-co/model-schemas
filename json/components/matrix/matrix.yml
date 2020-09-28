@@ -1,0 +1,92 @@
+Matrix.Geocode:
+  type: object
+  required:
+    - longitude
+    - latitude
+  properties:
+    longitude:
+      type: number
+      format: float
+    latitude:
+      type: number
+      format: float
+
+Matrix.Location:
+  type: object
+  required:
+    - id
+    - geocode
+  properties:
+    id:
+      type: string
+    geocode:
+      $ref: '#/Matrix.Geocode'
+  
+Matrix.Request:
+  type: object
+  required:
+    - distanceUnit
+    - durationUnit
+  properties:
+    locations: 
+      type: array
+      items:
+        $ref: '#/Matrix.Location'
+    sources:
+      type: array
+      items:
+        type: string
+    destinations:
+      type: array
+      items:
+        type: string
+    distanceUnit:
+      type: string
+      enum: ["KILOMETRES", "MILES"]
+      default: "KILOMETRES"
+    durationUnit:
+      type: string
+      enum: ["SECONDS","MINUTES","HOURS","DAYS"]
+      default: "HOURS"
+
+Matrix.Response.Element:
+  type: object
+  required:
+    - fromId
+    - toId
+    - distance
+    - duration
+  properties:
+    fromId:
+      type: string
+    toId:
+      type: string
+    distance:
+      type: number
+      format: float
+    duration:
+      type: number
+      format: float
+
+Matrix.Response:
+  type: object
+  properties:
+    elements:
+      type: array
+      items:
+        $ref: '#/Matrix.Response.Element'  
+   
+Matrix.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/Matrix.Response'

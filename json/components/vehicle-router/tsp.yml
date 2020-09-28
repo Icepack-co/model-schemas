@@ -1,0 +1,109 @@
+TSP.Geocode:
+  type: object
+  required:
+  - id
+  - x
+  - y
+  properties:
+    id:
+      type: string
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+
+TSP.Model:
+  type: object
+  properties:
+    points: 
+      type: array
+      items:
+        $ref: '#/TSP.Geocode'
+    distancetype:
+        type: string
+        enum: ["RoadNetwork", "Euclidean", "Haversine"]
+        default: "RoadNetwork"
+
+TSP.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/TSP.Model'
+
+TSP.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/TSP.Model'
+    modelID:
+      type: string
+    visitSequence:
+      type: array
+      items:
+        type: string
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+TSP.Edge:
+  type: object
+  required:
+    - from
+    - to
+  properties:
+    from:
+      type: string
+    to:
+      type: string
+    distance:
+      type: number
+      format: float
+    geometry:
+      type: array
+      items:
+        $ref: '#/TSP.Edge.Geometry'
+
+TSP.Edge.Geometry:
+  type: object
+  required:
+  - x
+  - y
+  properties:
+    x:
+      type: number
+      format: float
+    y:
+      type: number
+      format: float
+
+TSP.Solution:
+  type: object
+  properties:
+    tour:
+      type: array
+      items:
+        type: string
+    edges:
+      type: array
+      items:
+        $ref: '#/TSP.Edge'
+
+TSP.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/TSP.Solution'
