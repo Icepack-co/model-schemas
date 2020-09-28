@@ -350,7 +350,7 @@ IVR8.Compartment:
   properties:
     id:
       type: string
-    capacitites:
+    capacities:
       type: array
       items:
         $ref: '#/IVR8.Compartment.Capacity'
@@ -460,7 +460,7 @@ IVR8.Vehicle:
       type: string
     shift:
       $ref: '#/IVR8.Vehicle.Shift'
-    capacitites:
+    capacities:
       type: array
       items:
         $ref: '#/IVR8.Vehicle.Capacity'

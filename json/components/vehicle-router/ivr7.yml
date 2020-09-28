@@ -379,7 +379,7 @@ IVR7.Vehicle:
       type: string
     shift:
       $ref: '#/IVR7.Vehicle.Shift'
-    capacitites:
+    capacities:
       type: array
       items:
         $ref: '#/IVR7.Vehicle.Capacity'
