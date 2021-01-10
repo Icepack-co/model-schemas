@@ -156,6 +156,39 @@ NS3.Node.Flow:
       items:
         $ref: '#/NS3.UnitDimensionCost'
 
+NS3.Node.ProductTransform.Item:
+  type: object
+  properties:
+    productId:
+      type: string
+    productRatio:
+      type: number
+      format: float
+    dimensionRanges:
+      type: array
+      items:
+        $ref: '#/NS3.DimensionRange'
+    fixedDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.FixedDimensionCost'
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+
+NS3.Node.ProductTransform:
+  type: object
+  properties:
+    inputItems:
+      type: array
+      items: 
+        $ref: '#/NS3.Node.ProductTransform.Item'
+    outputItems:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductTransform.Item'
+
 NS3.Node:
   type: object
   required:
@@ -192,6 +225,10 @@ NS3.Node:
       type: array
       items:
         $ref: '#/NS3.FlowDimensionalConstraint'
+    productTransforms:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductTransform'
 
 NS3.ProductSpecification:
   type: object
