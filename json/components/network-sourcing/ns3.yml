@@ -162,8 +162,8 @@ NS3.Node.ProductTransform.Item:
     productId:
       type: string
     productRatio:
-      type: number
-      format: float
+      type: integer
+      format: int32
     dimensionRanges:
       type: array
       items:
