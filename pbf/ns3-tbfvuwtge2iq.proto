@@ -110,12 +110,16 @@ message Node {
       repeated FixedDimensionCost fixedDimensionCosts = 4;
       repeated UnitDimensionCost unitDimensionCosts = 5;
     }
+    
+    // in order to identify the item in the outputs
+    required string productTransformId = 1;
+
     // input product id's defining the transform (with their respective ratio) 
     // specify at least one.
-    repeated Item inputItems = 1;
+    repeated Item inputItems = 2;
     // output product id's defining the transform (with their respective ratio) 
     // specify at least one.
-    repeated Item outputItems = 2;
+    repeated Item outputItems = 3;
   }
 
   required string id = 1;
@@ -256,6 +260,15 @@ message SolutionResponse {
     required string toId = 2;
     repeated int32 geometrySequence = 3;
   }
+  message NodeProductTransformAssignment {
+    required string nodeId = 1;
+    required string productTransformId = 2;
+    
+    repeated string inputProductId = 3;
+    repeated float inputAmount = 4;
+    repeated string outputProductId = 5;
+    repeated float outputAmount = 6;
+  }
 
   required float objective = 1;
   optional float lowerBound = 2;
@@ -265,4 +278,5 @@ message SolutionResponse {
   repeated NodeProductFlow nodeProductFlows = 6;
   repeated GeometrySequence geometrySequence = 7;
   repeated Route routes = 8;
+  repeated NodeProductTransformAssignment nodeProductTransformAssignments = 9;
 }

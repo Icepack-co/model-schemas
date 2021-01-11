@@ -180,6 +180,8 @@ NS3.Node.ProductTransform.Item:
 NS3.Node.ProductTransform:
   type: object
   properties:
+    productTransformId:
+      type: string
     inputItems:
       type: array
       items: 
@@ -534,6 +536,32 @@ NS3.SolutionResponse.Route:
         type: integer
         format: int32
 
+NS3.SolutionResponse.NodeProductTransformAssignment:
+  type: object
+  properties:
+    nodeId:
+      type: string
+    productTransformId:
+      type: string
+    inputProductId:
+      type: array
+      items:
+        type: string
+    inputAmount:
+      type: array
+      items:
+        type: number
+        format: float
+    outputProductId:
+      type: array
+      items:
+        type: string
+    outputAmount:
+      type: array
+      items:
+        type: number
+        format: float
+
 NS3.SolutionResponse:
   type: object
   required:
@@ -568,6 +596,10 @@ NS3.SolutionResponse:
       type: array
       items:
         $ref: '#/NS3.SolutionResponse.Route'
+    nodeProductTransformAssignments:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment'
 
 NS3.SolverResponse:
   type: object
