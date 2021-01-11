@@ -156,6 +156,41 @@ NS3.Node.Flow:
       items:
         $ref: '#/NS3.UnitDimensionCost'
 
+NS3.Node.ProductTransform.Item:
+  type: object
+  properties:
+    productId:
+      type: string
+    productRatio:
+      type: integer
+      format: int32
+    dimensionRanges:
+      type: array
+      items:
+        $ref: '#/NS3.DimensionRange'
+    fixedDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.FixedDimensionCost'
+    unitDimensionCosts:
+      type: array
+      items:
+        $ref: '#/NS3.UnitDimensionCost'
+
+NS3.Node.ProductTransform:
+  type: object
+  properties:
+    productTransformId:
+      type: string
+    inputItems:
+      type: array
+      items: 
+        $ref: '#/NS3.Node.ProductTransform.Item'
+    outputItems:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductTransform.Item'
+
 NS3.Node:
   type: object
   required:
@@ -192,6 +227,10 @@ NS3.Node:
       type: array
       items:
         $ref: '#/NS3.FlowDimensionalConstraint'
+    productTransforms:
+      type: array
+      items:
+        $ref: '#/NS3.Node.ProductTransform'
 
 NS3.ProductSpecification:
   type: object
@@ -497,6 +536,43 @@ NS3.SolutionResponse.Route:
         type: integer
         format: int32
 
+NS3.SolutionResponse.NodeProductTransformAssignment.Item:
+  type: object
+  properties:
+    productId:
+      type: string
+    amount:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+    fixedCost:
+      type: number
+      format: float
+    penaltyAmount:
+      type: number
+      format: float
+    penaltyCost:
+      type: number
+      format: float
+
+NS3.SolutionResponse.NodeProductTransformAssignment:
+  type: object
+  properties:
+    nodeId:
+      type: string
+    productTransformId:
+      type: string
+    inputItems:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment.Item'
+    outputItems:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment.Item'
+    
 NS3.SolutionResponse:
   type: object
   required:
@@ -531,6 +607,10 @@ NS3.SolutionResponse:
       type: array
       items:
         $ref: '#/NS3.SolutionResponse.Route'
+    nodeProductTransformAssignments:
+      type: array
+      items:
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment'
 
 NS3.SolverResponse:
   type: object
