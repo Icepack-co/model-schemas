@@ -536,6 +536,27 @@ NS3.SolutionResponse.Route:
         type: integer
         format: int32
 
+NS3.SolutionResponse.NodeProductTransformAssignment.Item:
+  type: object
+  properties:
+    productId:
+      type: string
+    amount:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+    fixedCost:
+      type: number
+      format: float
+    penaltyAmount:
+      type: number
+      format: float
+    penaltyCost:
+      type: number
+      format: float
+
 NS3.SolutionResponse.NodeProductTransformAssignment:
   type: object
   properties:
@@ -543,25 +564,15 @@ NS3.SolutionResponse.NodeProductTransformAssignment:
       type: string
     productTransformId:
       type: string
-    inputProductId:
+    inputItems:
       type: array
       items:
-        type: string
-    inputAmount:
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment.Item'
+    outputItems:
       type: array
       items:
-        type: number
-        format: float
-    outputProductId:
-      type: array
-      items:
-        type: string
-    outputAmount:
-      type: array
-      items:
-        type: number
-        format: float
-
+        $ref: '#/NS3.SolutionResponse.NodeProductTransformAssignment.Item'
+    
 NS3.SolutionResponse:
   type: object
   required:
