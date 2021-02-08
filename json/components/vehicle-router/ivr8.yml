@@ -169,10 +169,23 @@ IVR8.Job.Task.Attribute:
       type: number
       format: float
       default: 0
-    windows: 
+    windows:
       type: array
       items:
         $ref: '#/IVR8.Window'
+
+IVR8.Job.Task.TaskRelation:
+  type: object
+  required:
+    - type
+  properties:
+    type: 
+      type: string
+      enum: ["INCLUSIVE", "EXCLUSIVE"]
+    taskIds: 
+      type: array
+      items:
+        type: string
 
 IVR8.Job.Task:
   type: object
@@ -192,6 +205,10 @@ IVR8.Job.Task:
       type: array
       items:
         $ref: '#/IVR8.Job.Task.TripConstraint'
+    predecessors:
+      $ref: '#/IVR8.Job.Task.TaskRelation'
+    successors:
+      $ref: '#/IVR8.Job.Task.TaskRelation'
 
 IVR8.Job:
   type: object
