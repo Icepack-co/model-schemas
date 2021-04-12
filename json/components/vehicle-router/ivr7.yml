@@ -160,6 +160,10 @@ IVR7.Job.Task.Attribute:
       type: array
       items:
         $ref: '#/IVR7.Window'
+    vehicleIds:
+      type: array
+      items:
+        type: string
 
 IVR7.Job.Task:
   type: object
