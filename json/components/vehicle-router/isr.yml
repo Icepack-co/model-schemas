@@ -62,6 +62,7 @@ ISR.Collection:
     - id
     - location
     - quantity
+    - stopTime
     - offloadSiteId
   properties:
     id:
@@ -69,6 +70,9 @@ ISR.Collection:
     location:
       $ref: '#/ISR.Geocode'
     quantity:
+      type: number
+      format: float
+    stopTime:
       type: number
       format: float
     offloadSiteId:
@@ -100,19 +104,6 @@ ISR.Vehicle:
       type: number
       format: float
 
-ISR.Visit.TerritoryRelation:
-  type: object
-  required:
-    - type
-  properties:
-    type:
-      type: string
-      enum: ["INCLUSIVE","EXCLUSIVE"]
-    territoryIds:
-      type: array
-      items:
-        type: string
-
 ISR.CollectionSequence:
   type: object
   required:
@@ -124,8 +115,7 @@ ISR.CollectionSequence:
     collectionId:
       type: array
       items:
-        type: number
-        format: float
+        type: string
 
 ISR.Model:
   type: object
