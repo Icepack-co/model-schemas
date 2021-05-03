@@ -29,3 +29,4 @@ cvrptw-acyas3nzweqb	| vehicle-router | [CVRP](https://docs.icepack.ai/vcrptw/) w
 ivr7-kt461v8eoaif	| vehicle-router | [IVR7](https://docs.icepack.ai/ivr/)
 ivr8-yni1c9k2swof	| vehicle-router | IVR7 + Compartments = [IVR8](https://docs.icepack.ai/ivr/)
 nvd-hap0j2y4zlm1 |  vehicle-router | [Sales rep](https://docs.icepack.ai/nvd/) periodic solver (ivr7-backed)
+isr-z4foi53qznrv | vehicle-router | [Street Router]() - used for high frequency stops where the bearing of travel in conjunction with visiting segments once is important. See the docs for more info.

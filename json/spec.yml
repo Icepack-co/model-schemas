@@ -20,7 +20,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/TSP/tsp.yml#/TSP.SolveRequest'
+              $ref: './components/vehicle-router/tsp.yml#/TSP.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/TSP/tsp.yml#/TSP.SolverResponse'
+                $ref: './components/vehicle-router/tsp.yml#/TSP.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -69,7 +69,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/TSP/tsp.yml#/TSP.CachedModel'
+              $ref: './components/vehicle-router/tsp.yml#/TSP.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -93,7 +93,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/TSPTW/tsptw.yml#/TSPTW.SolveRequest'
+              $ref: './components/vehicle-router/tsptw.yml#/TSPTW.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -125,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/TSPTW/tsptw.yml#/TSPTW.SolverResponse'
+                $ref: './components/vehicle-router/tsptw.yml#/TSPTW.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -142,7 +142,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/TSPTW/tsptw.yml#/TSPTW.CachedModel'
+              $ref: './components/vehicle-router/tsptw.yml#/TSPTW.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -166,7 +166,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/CVRP/cvrp.yml#/CVRP.SolveRequest'
+              $ref: './components/vehicle-router/cvrp.yml#/CVRP.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -198,7 +198,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/CVRP/cvrp.yml#/CVRP.SolverResponse'
+                $ref: './components/vehicle-router/cvrp.yml#/CVRP.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -215,7 +215,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/CVRP/cvrp.yml#/CVRP.CachedModel'
+              $ref: './components/vehicle-router/cvrp.yml#/CVRP.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -239,7 +239,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.SolveRequest'
+              $ref: './components/vehicle-router/cvrptw.yml#/CVRPTW.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -271,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.SolverResponse'
+                $ref: './components/vehicle-router/cvrptw.yml#/CVRPTW.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -288,7 +288,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/CVRPTW/cvrptw.yml#/CVRPTW.CachedModel'
+              $ref: './components/vehicle-router/cvrptw.yml#/CVRPTW.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -312,7 +312,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/Matrix/matrix.yml#/Matrix.Request'
+              $ref: './components/matrix/matrix.yml#/Matrix.Request'
       responses:
         "200":
           description: Expected response to a valid request
@@ -344,7 +344,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/Matrix/matrix.yml#/Matrix.SolverResponse'
+                $ref: './components/matrix/matrix.yml#/Matrix.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -361,7 +361,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR7/ivr7.yml#/IVR7.SolveRequest'
+              $ref: './components/vehicle-router/ivr7.yml#/IVR7.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -393,7 +393,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/IVR7/ivr7.yml#/IVR7.SolverResponse'
+                $ref: './components/vehicle-router/ivr7.yml#/IVR7.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -410,7 +410,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR7/ivr7.yml#/IVR7.CachedModel'
+              $ref: './components/vehicle-router/ivr7.yml#/IVR7.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -434,7 +434,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR7/ivr7.yml#/IVR7.CachedTransitSet'
+              $ref: './components/vehicle-router/ivr7.yml#/IVR7.CachedTransitSet'
       responses:
         "200":
           description: Expected response to a valid request
@@ -458,7 +458,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR8/ivr8.yml#/IVR8.SolveRequest'
+              $ref: './components/vehicle-router/ivr8.yml#/IVR8.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -490,7 +490,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/IVR8/ivr8.yml#/IVR8.SolverResponse'
+                $ref: './components/vehicle-router/ivr8.yml#/IVR8.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -507,7 +507,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR8/ivr8.yml#/IVR8.CachedModel'
+              $ref: './components/vehicle-router/ivr8.yml#/IVR8.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -531,7 +531,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/IVR8/ivr8.yml#/IVR8.CachedTransitSet'
+              $ref: './components/vehicle-router/ivr8.yml#/IVR8.CachedTransitSet'
       responses:
         "200":
           description: Expected response to a valid request
@@ -555,7 +555,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/NVD/nvd.yml#/NVD.SolveRequest'
+              $ref: './components/vehicle-router/nvd.yml#/NVD.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -587,7 +587,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/NVD/nvd.yml#/NVD.SolverResponse'
+                $ref: './components/vehicle-router/nvd.yml#/NVD.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -604,7 +604,80 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/NVD/nvd.yml#/NVD.CachedModel'
+              $ref: './components/vehicle-router/nvd.yml#/NVD.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/isr-z4foi53qznrv:
+    post:
+      description: Sends a solve request for a ISR model to the api
+      operationId: post /isr-z4foi53qznrv
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/vehicle-router/isr.yml#/ISR.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/isr-z4foi53qznrv/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a NVD model submitted.
+      operationId: get isr-z4foi53qznrv
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/vehicle-router/isr.yml#/ISR.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/isr-z4foi53qznrv/model:
+    post:
+      description: Sends a data model for use in a future ISR solve request to the api
+      operationId: post model data isr-z4foi53qznrv
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/vehicle-router/isr.yml#/ISR.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
@@ -628,7 +701,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/NS3/ns3.yml#/NS3.SolveRequest'
+              $ref: './components/network-sourcing/ns3.yml#/NS3.SolveRequest'
       responses:
         "200":
           description: Expected response to a valid request
@@ -660,7 +733,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: './components/NS3/ns3.yml#/NS3.SolverResponse'
+                $ref: './components/network-sourcing/ns3.yml#/NS3.SolverResponse'
         default:
           description: unexpected error
           content:
@@ -677,7 +750,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: './components/NS3/ns3.yml#/NS3.CachedModel'
+              $ref: './components/network-sourcing/ns3.yml#/NS3.CachedModel'
       responses:
         "200":
           description: Expected response to a valid request
