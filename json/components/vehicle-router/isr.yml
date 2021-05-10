@@ -23,6 +23,12 @@ ISR.Configuration:
     distanceCostCoef:
       type: number
       format: float
+    drivingSide:
+      type: string
+      enum: ["LEFT", "RIGHT"]
+    collectionSide:
+      type: string
+      enum: ["DRIVINGSIDE_ONLY", "BOTH"]
 
 ISR.Geocode:
   type: object
