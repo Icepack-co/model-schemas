@@ -619,6 +619,79 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
 
+  /vehicle-router/solve/ndd-cmibu6krtqja:
+    post:
+      description: Sends a solve request for a NDD model to the api
+      operationId: post /ndd-cmibu6krtqja
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/vehicle-router/ndd.yml#/NDD.SolveRequest'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/solve/ndd-cmibu6krtqja/{requestid}:
+    get:
+      summary: Gets a solution or solve status for a NDD model submitted.
+      operationId: get ndd-cmibu6krtqja
+      parameters:
+      - name: requestid
+        in: path
+        required: true
+        description: The id of the solution response to retrieve according to the submitted cvrp payload
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/vehicle-router/ndd.yml#/NDD.SolverResponse'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /vehicle-router/data/ndd-cmibu6krtqja/model:
+    post:
+      description: Sends a data model for use in a future NDD solve request to the api
+      operationId: post model data ndd-cmibu6krtqja
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './components/vehicle-router/ndd.yml#/NDD.CachedModel'
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: './components/common.yml#/requestGuid'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
   /vehicle-router/solve/isr-z4foi53qznrv:
     post:
       description: Sends a solve request for a ISR model to the api

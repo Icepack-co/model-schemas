@@ -394,8 +394,6 @@ NVD.SolutionResponse.Route:
 
 NVD.SolutionResponse.SolutionInstance:
   type: object
-  required:
-    - objective
   properties:
     routes:
       type: array
