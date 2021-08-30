@@ -1,0 +1,395 @@
+
+ISR.Configuration:
+  type: object
+  required:
+    - timeUnit
+    - timeCoef
+    - timeCostCoef
+    - distanceUnit
+    - distanceCostCoef
+  properties:
+    timeUnit:
+      type: string
+      enum: ["SECONDS", "MINUTES", "HOURS", "DAYS"]
+    timeCoef:
+      type: number
+      format: float
+    timeCostCoef:
+      type: number
+      format: float
+    distanceUnit:
+      type: string
+      enum: ["KILOMETRES", "MILES"]
+    distanceCostCoef:
+      type: number
+      format: float
+    drivingSide:
+      type: string
+      enum: ["LEFT", "RIGHT"]
+    collectionSide:
+      type: string
+      enum: ["DRIVINGSIDE_ONLY", "BOTH"]
+
+ISR.Geocode:
+  type: object
+  required:
+    - longitude
+    - latitude
+  properties:
+    longitude:
+      type: number
+      format: float
+    latitude:
+      type: number
+      format: float
+
+ISR.OffloadSite:
+  type: object
+  required:
+    - id
+    - location
+    - fixedOffloadTime
+    - offloadTimePerQuantity
+  properties:
+    id:
+      type: string
+    location:
+      $ref: '#/ISR.Geocode'
+    fixedOffloadTime:
+      type: number
+      format: float
+    offloadTimePerQuantity:
+      type: number
+      format: float
+
+ISR.Collection:
+  type: object
+  required:
+    - id
+    - location
+    - quantity
+    - stopTime
+    - offloadSiteId
+  properties:
+    id:
+      type: string
+    location:
+      $ref: '#/ISR.Geocode'
+    quantity:
+      type: number
+      format: float
+    stopTime:
+      type: number
+      format: float
+    offloadSiteId:
+      type: string
+
+ISR.Vehicle:
+  type: object
+  required:
+    - id
+    - startLocation
+    - endLocation
+    - startTime
+    - endTime
+    - capacity
+  properties:
+    id: 
+      type: string
+    startLocation:
+      $ref: '#/ISR.Geocode'
+    endLocation:
+      $ref: '#/ISR.Geocode'
+    startTime:
+      type: number
+      format: float
+    endTime:
+      type: number
+      format: float
+    capacity:
+      type: number
+      format: float
+
+ISR.CollectionSequence:
+  type: object
+  required:
+    - vehicleId
+    - collectionId
+  properties:
+    vehicleId:
+      type: string
+    collectionId:
+      type: array
+      items:
+        type: string
+
+ISR.Model:
+  type: object
+  required:
+    - configuration
+  properties:
+    configuration: 
+      $ref: '#/ISR.Configuration'
+    collections:
+      type: array
+      items:
+        $ref: '#/ISR.Collection'
+    offloadSites:
+      type: array
+      items:
+        $ref: '#/ISR.OffloadSite'
+    vehicles:
+      type: array
+      items:
+        $ref: '#/ISR.Vehicle'
+    collectionSequence:
+      type: array
+      items:
+        $ref: '#/ISR.CollectionSequence'
+
+ISR.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/ISR.Model'
+
+
+ISR.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/ISR.Model'
+    modelID:
+      type: string
+    routes:
+      type: array
+      items:
+        $ref: '#/ISR.CollectionSequence'
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise", "NetworkMatchings"]
+      default: "Optimise"
+
+# OUPUT Objects
+
+ISR.Matching:
+  type: object
+  required:
+    - collectionId
+    - collectionPoint
+    - segmentsId
+  properties:
+    collectionId:
+      type: string
+    collectionPoint:
+      $ref: '#/ISR.Geocode' 
+    segmentsId:
+      type: integer
+      format: int64
+
+ISR.Segment:
+  type: object
+  required:
+    - id
+    - name
+    - weight
+    - duration
+    - geometry
+  properties:
+    id:
+      type: integer
+      format: int64
+    name:
+      type: string
+    weight:
+      type: number
+      format: float
+    duration:
+      type: number
+      format: float
+    geometry:
+      type: array
+      items:
+        $ref: '#/ISR.Geocode'
+
+ISR.SolutionResponse.Infeasibility.Info:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      type: string
+    dimId:
+      type: string
+    limit:
+      type: number
+      format: float
+    value:
+      type: number
+      format: float
+    count:
+      type: integer
+      format: int64
+    constrainingCollectionIds:
+      type: array
+      items:
+        type: string
+
+ISR.SolutionResponse.Infeasibility:
+  type: object
+  required:
+    - collectionId
+  properties:
+    collectionId:
+      type: string
+    infeasibilityInfo:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.Infeasibility.Info'
+
+
+ISR.SolutionResponse.Stop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+ISR.SolutionResponse.Stop:
+  type: object
+  required:
+    - id
+    - sequence
+    - taskId
+    - jobId
+    - location
+  properties:
+    id:
+      type: integer
+      format: int32
+    sequence:
+      type: integer
+      format: int32
+    collectionId:
+      type: string
+    offloadSiteId:
+      type: string
+    segmentId:
+      type: integer
+      format: int64
+    attributes:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.Stop.Attribute'
+    location:
+      $ref: '#/ISR.Geocode'
+
+ISR.SolutionResponse.InterStop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+ISR.SolutionResponse.InterStop:
+  type: object
+  required:
+    - fromStopId
+    - toStopId
+  properties:
+    fromStopId:
+      type: integer
+      format: int32
+    toStopId:
+      type: integer
+      format: int32
+    attributes:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.InterStop.Attribute'
+    geometry:
+      type: array
+      items:
+        $ref: '#/ISR.Geocode'
+
+
+ISR.SolutionResponse.Route:
+  type: object
+  required:
+    - vehicleId
+  properties:
+    vehicleId:
+      type: string
+    stops:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.Stop'
+    interStops:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.InterStop'
+
+ISR.SolutionResponse:
+  type: object
+  required:
+    - objective
+  properties:
+    routes:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.Route'
+    infeasibilities:
+      type: array
+      items:
+        $ref: '#/ISR.SolutionResponse.Infeasibility'
+    matchings:
+      type: array
+      items:
+        $ref: '#/ISR.Matching'
+    segments:
+      type: array
+      items:
+        $ref: '#/ISR.Segment'
+
+ISR.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/ISR.SolutionResponse'

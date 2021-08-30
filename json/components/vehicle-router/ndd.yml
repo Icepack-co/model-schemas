@@ -1,0 +1,812 @@
+
+NDD.InternalDimension:
+  type: object
+  required: 
+    - id
+    - measurementUnit
+  properties:
+    id:
+      type: string
+    measurementUnit:
+      type: string
+      enum: ["SECONDS", "MINUTES", "HOURS", "DAYS", "KILOMETRES", "MILES"]
+    slackMax:
+      type: number
+      format: float
+      default: 0
+    tardyMax:
+      type: number
+      format: float
+      default: 0
+
+NDD.CapacityDimension:
+  type: object
+  required:
+    - id
+    - units
+  properties:
+    id:
+      type: string
+    units:
+      type: string
+    slackMax:
+      type: number
+      format: float
+      default: 0
+    tardyMax:
+      type: number
+      format: float
+      default: 0
+
+NDD.DimensionConfiguration:
+  type: object
+  required:
+    - weekLength
+    - periodLength
+  properties:
+    timeConfig:
+      $ref: '#/NDD.InternalDimension'
+    distanceConfig:
+      $ref: '#/NDD.InternalDimension'
+    capacityDimensions: 
+      type: array
+      items:
+        $ref: '#/NDD.CapacityDimension'
+    weekLength:
+      type: integer
+      format: int32
+    periodLength:
+      type: integer
+      format: int32
+
+NDD.Geocode:
+  type: object
+  required:
+    - longitude
+    - latitude
+  properties:
+    longitude:
+      type: number
+      format: float
+    latitude:
+      type: number
+      format: float
+
+NDD.Window:
+  type: object
+  required:
+    - start
+    - end
+  properties:
+    start:
+      type: number
+      format: float
+    end:
+      type: number
+      format: float
+    slackCostCoef:
+      type: number
+      format: float
+      default: 0
+    tardyCostCoef:
+      type: number
+      format: float
+      default: 0
+    slackMax:
+      type: number
+      format: float
+      default: -1
+    tardyMax:
+      type: number
+      format: float
+      default: -1
+
+NDD.Location.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    vehicleId:
+      type: string
+    quantity:
+      type: number
+      format: float
+      default: 0
+    arrivalWindows: 
+      type: array
+      items:
+        $ref: '#/NDD.Window'
+    departureWindows: 
+      type: array
+      items:
+        $ref: '#/NDD.Window'
+
+NDD.Location:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    geocode:
+      $ref: '#/NDD.Geocode'
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.Location.Attribute'
+
+NDD.Profile.CustomCycle:
+  type: object
+  properties:
+    visitProfile:
+      type: array
+      items: 
+        type: boolean
+
+NDD.Profile:
+  type: object
+  required:
+    - frequencyType
+  properties:
+    frequencyType:
+      type: string
+      enum: ["CUSTOM","SEVEN_TIMES_A_WEEK","SIX_TIMES_A_WEEK","FIVE_TIMES_A_WEEK","FOUR_TIMES_A_WEEK",
+      "THREE_TIMES_A_WEEK","TWICE_A_WEEK","ONCE_A_WEEK","EVERY_SECOND_WEEK","ONCE_A_MONTH"]
+    allowableCycles:
+      type: array
+      items:
+        $ref: '#/NDD.Profile.CustomCycle'
+    numVisits:
+      type: integer
+      format: int32
+
+NDD.Job.VehicleRelation:
+  type: object
+  required:
+    - type
+  properties:
+    type: 
+      type: string
+      enum: ["INCLUSIVE", "EXCLUSIVE"]
+    vehicleIds: 
+      type: array
+      items:
+        type: string
+
+NDD.Job.Task.TripConstraint:
+  type: string
+  enum: ["FIRST", "LAST"]
+
+NDD.Job.Task.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    quantity:
+      type: number
+      format: float
+      default: 0
+    windows: 
+      type: array
+      items:
+        $ref: '#/NDD.Window'
+    vehicleIds:
+      type: array
+      items:
+        type: string
+
+NDD.Job.Task:
+  type: object
+  required:
+    - taskId
+    - locationId
+  properties:
+    taskId:
+      type: string
+    locationId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.Job.Task.Attribute'
+    tripConstraints:
+      type: array
+      items:
+        $ref: '#/NDD.Job.Task.TripConstraint'
+
+NDD.Job:
+  type: object
+  required:
+    - id
+    - penalty
+    - profile
+  properties:
+    id:
+      type: string
+    pickupTask:
+      $ref: '#/NDD.Job.Task'
+    dropoffTask:
+      $ref: '#/NDD.Job.Task'
+    penalty:
+      type: number
+      format: float
+    vehicleRelations:
+      $ref: '#/NDD.Job.VehicleRelation'
+    profile:
+      $ref: '#/NDD.Profile'
+
+NDD.TransitSet.TransitValue:
+  type: object
+  required:
+    - fromId
+    - toId
+    - value
+  properties:
+    fromId:
+      type: string
+    toId:
+      type: string
+    value:
+      type: number
+      format: float
+    
+NDD.TransitSet:
+  type: object
+  properties:
+    transits:
+      type: array
+      items:
+        $ref: '#/NDD.TransitSet.TransitValue'
+
+NDD.TransitGenerator:
+  type: object
+  required:
+    - id
+  properties:
+    id:
+      type: string
+    requestId:
+      type: string
+    transitSet:
+      $ref: '#/NDD.TransitSet'
+
+NDD.VehicleClass.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    transitGeneratorId:
+      type: string
+    transitCoef:
+      type: number
+      format: float
+      default: 1
+    taskCoef:
+      type: number
+      format: float
+      default: 1
+    locationCoef:
+      type: number
+      format: float
+      default: 1
+
+NDD.VehicleClass:
+  type: object
+  required:
+    - id
+  properties:
+    id: 
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.VehicleClass.Attribute'
+    transitRuleIds:
+      type: array
+      items:
+        type: string         
+
+NDD.VehicleCostClass.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    transitCostCoef:
+      type: number
+      format: float
+      default: 0
+    taskCostCoef:
+      type: number
+      format: float
+      default: 0
+    locationCostCoef:
+      type: number
+      format: float
+      default: 0
+    slackCostCoef:
+      type: number
+      format: float
+      default: 0
+    tardyCostCoef:
+      type: number
+      format: float
+      default: 0
+
+NDD.VehicleCostClass:
+  type: object
+  required:
+    - id
+    - fixedCost
+  properties:
+    id:
+      type: string
+    fixedCost:
+      type: number
+      format: float
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.VehicleCostClass.Attribute'
+
+NDD.Vehicle.Task.Attribute:
+  type: object
+  required:
+    - dimensionId
+  properties:
+    dimensionId:
+      type: string
+    quantity:
+      type: number
+      format: float
+    windows:
+      type: array
+      items:
+        $ref: '#/NDD.Window'
+
+NDD.Vehicle.Task:
+  type: object
+  required:
+    - locationId
+  properties:
+    locationId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.Vehicle.Task.Attribute'
+      
+NDD.Vehicle.Shift:
+  type: object
+  required:
+    - shiftStart
+  properties:
+    shiftStart:
+      $ref: '#/NDD.Vehicle.Task'
+    shiftEnd:
+      $ref: '#/NDD.Vehicle.Task'
+
+NDD.Vehicle.Capacity:
+  type: object
+  required:
+    - dimensionId
+    - capacity
+  properties:
+    dimensionId:
+      type: string
+    capacity:
+      type: number
+      format: float
+
+NDD.Vehicle:
+  type: object
+  required:
+    - id
+    - classId
+    - costClassId
+  properties:
+    id:
+      type: string
+    classId:
+      type: string
+    costClassId:
+      type: string
+    shift:
+      type: array
+      items:
+        $ref: '#/NDD.Vehicle.Shift'
+    capacities:
+      type: array
+      items:
+        $ref: '#/NDD.Vehicle.Capacity'
+    transitRuleIds:
+      type: array
+      items:
+        type: string
+
+NDD.TaskSequence:
+  type: object
+  required:
+    - vehicleId
+    - dayIndex
+  properties:
+    vehicleId:
+      type: string
+    dayIndex:
+      type: integer
+      format: int32
+    taskId:
+      type: array
+      items:
+        type: string
+
+NDD.TransitRule.Trigger:
+  type: object
+  required:
+    - value
+    - quantity
+  properties:
+    value: 
+      type: number
+      format: float
+    quantity:
+      type: number
+      format: float
+
+NDD.TransitRule:
+  type: object
+  required:
+    - id
+    - dimensionId
+    - ruleIdPrefix
+  properties:
+    id:
+      type: string
+    dimensionId:
+      type: string
+    useStandingState:
+      type: boolean
+      default: true
+    useTransitState:
+      type: boolean
+      default: false
+    ruleIdPrefix:
+      type: string
+    triggers:
+      type: array
+      items:
+        $ref: '#/NDD.TransitRule.Trigger'
+
+
+NDD.Model:
+  type: object
+  required:
+    - dimensions
+  properties:
+    dimensions: 
+      $ref: '#/NDD.DimensionConfiguration'
+    locations:
+      type: array
+      items: 
+        $ref: '#/NDD.Location'
+    jobs:
+      type: array
+      items: 
+        $ref: '#/NDD.Job'
+    vehicles:
+      type: array
+      items: 
+        $ref: '#/NDD.Vehicle'
+    vehicleClasses:
+      type: array
+      items: 
+        $ref: '#/NDD.VehicleClass'
+    vehicleCostClasses:
+      type: array
+      items: 
+        $ref: '#/NDD.VehicleCostClass'
+    transitRules:
+      type: array
+      items: 
+        $ref: '#/NDD.TransitRule'
+    transitGenerators:
+      type: array
+      items: 
+        $ref: '#/NDD.TransitGenerator'
+    taskSequence:
+      type: array
+      items: 
+        $ref: '#/NDD.TaskSequence'
+    
+NDD.SolveRequest:
+  type: object
+  properties:
+    model:
+      $ref: '#/NDD.Model'
+    modelID:
+      type: string
+    routes:
+      type: array
+      items:
+        $ref: '#/NDD.TaskSequence'
+    solveType:
+      type: string
+      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      default: "Optimise"
+   
+NDD.CachedModel:
+  type: object
+  required:
+    - model
+  properties:
+    model:
+      $ref: '#/NDD.Model'
+
+NDD.CachedTransitSet:
+  type: object
+  required:
+    - transitSet
+  properties:
+    transitSet:
+      $ref: '#/NDD.TransitSet'
+
+NDD.SolutionResponse.Infeasibility.Info:
+  type: object
+  required:
+    - message
+  properties:
+    message:
+      type: string
+    dimId:
+      type: string
+    limit:
+      type: number
+      format: float
+    value:
+      type: number
+      format: float
+    count:
+      type: integer
+      format: int64
+    constrainingTaskIds:
+      type: array
+      items:
+        type: string
+
+NDD.SolutionResponse.Infeasibility:
+  type: object
+  required:
+    - taskId
+  properties:
+    taskId:
+      type: string
+    infeasibilityInfo:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.Infeasibility.Info'
+
+
+NDD.SolutionResponse.Stop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+    - slackValue
+    - slackCost
+    - tardyValue
+    - tardyCost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+    slackValue:
+      type: number
+      format: float
+    slackCost:
+      type: number
+      format: float
+    tardyValue:
+      type: number
+      format: float
+    tardyCost:
+      type: number
+      format: float
+
+NDD.SolutionResponse.Stop:
+  type: object
+  required:
+    - id
+    - sequence
+    - locationId
+    - taskId
+    - jobId
+  properties:
+    id:
+      type: integer
+      format: int32
+    sequence:
+      type: integer
+      format: int32
+    locationId:
+      type: string
+    taskId:
+      type: string
+    jobId:
+      type: string
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.Stop.Attribute'
+
+NDD.SolutionResponse.InterStop.Attribute:
+  type: object
+  required:
+    - dimId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    dimId:
+      type: string
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+NDD.SolutionResponse.InterStop:
+  type: object
+  required:
+    - fromStopId
+    - toStopId
+  properties:
+    fromStopId:
+      type: integer
+      format: int32
+    toStopId:
+      type: integer
+      format: int32
+    attributes:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.InterStop.Attribute'
+    routeSegments:
+      type: array
+      items:
+        $ref: '#/NDD.Geocode'
+
+NDD.SolutionResponse.TransitRuleAttribute:
+  type: object
+  required:
+    - ruleId
+    - dimId
+    - fromStopId
+    - toStopId
+    - startValue
+    - endValue
+    - cost
+  properties:
+    ruleId:
+      type: string
+    dimId:
+      type: string
+    fromStopId:
+      type: integer
+      format: int32
+    toStopId:
+      type: integer
+      format: int32
+    startValue:
+      type: number
+      format: float
+    endValue:
+      type: number
+      format: float
+    cost:
+      type: number
+      format: float
+
+NDD.SolutionResponse.Route:
+  type: object
+  required:
+    - vehicleId
+    - day
+  properties:
+    vehicleId:
+      type: string
+    stops:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.Stop'
+    interStops:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.InterStop'
+    fixedCost:
+      type: array
+      items:
+        type: number
+        format: float
+    transitRuleAttributes:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.TransitRuleAttribute'
+    day:
+      type: integer
+      format: int32
+
+NDD.SolutionResponse.SolutionInstance:
+  type: object
+  properties:
+    routes:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.Route'
+    infeasibilities:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.Infeasibility'
+
+NDD.SolutionResponse.CompactSolution:
+  type: object
+  properties:
+    taskSequence:
+      type: array
+      items:
+        $ref: '#/NDD.TaskSequence'
+    objectives:
+      type: array
+      items: 
+        type: number
+        format: float
+    objectiveNames:
+      type: array
+      items:
+        type: string
+
+NDD.SolutionResponse:
+  type: object
+  properties:
+    frontier:
+      type: array
+      items:
+        $ref: '#/NDD.SolutionResponse.CompactSolution'
+    instance:
+      $ref: '#/NDD.SolutionResponse.SolutionInstance'
+
+
+NDD.SolverResponse:
+  type: object
+  required:
+    - state
+  properties:
+    logs:
+      type: array
+      items:
+        $ref: '../common.yml#/SolverInfo'
+    state:
+      type: string
+      enum: ["INFO", "COMPLETED", "FAILED"]
+    solution:
+      $ref: '#/NDD.SolutionResponse'
