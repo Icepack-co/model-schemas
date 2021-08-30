@@ -20,6 +20,16 @@ message Configuration {
     MILES = 5;       // distance
   }
 
+  enum eDrivingSide {
+    LEFT = 0;
+    RIGHT = 1;
+  }
+
+  enum eCollectionSide{
+    DRIVINGSIDE_ONLY = 0;
+    BOTH = 1;
+  }
+
   required eMeasurementUnit timeUnit = 1 [default = MINUTES];
   // global speed multiplier. 1.1 = 10% slower. 0.9 = faster.
   required float timeCoef = 2 [default = 1.0]; 
@@ -28,7 +38,11 @@ message Configuration {
   // distance units: kms/miles
   required eMeasurementUnit distanceUnit = 4 [default = KILOMETRES];
   // cost per distance unit
-  required float distanceCostCoef = 5 [default = 1.0];       
+  required float distanceCostCoef = 5 [default = 1.0];
+
+  required eDrivingSide drivingSide = 6;
+  
+  required eCollectionSide collectionSide = 7;
 }
 
 message Geocode {
