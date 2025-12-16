@@ -538,7 +538,7 @@ NDD.SolveRequest:
         $ref: '#/NDD.TaskSequence'
     solveType:
       type: string
-      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      enum: ["Optimise", "Evaluate", "ReOptimise", "ExperimentalOptimise"]
       default: "Optimise"
    
 NDD.CachedModel:

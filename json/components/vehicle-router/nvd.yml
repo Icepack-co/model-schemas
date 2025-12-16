@@ -190,7 +190,7 @@ NVD.SolveRequest:
         $ref: '#/NVD.VisitSequence'
     solveType:
       type: string
-      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      enum: ["Optimise", "Evaluate", "ReOptimise", "ExperimentalOptimise"]
       default: "Optimise"
 
 # OUPUT Objects
