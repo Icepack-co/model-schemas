@@ -607,7 +607,7 @@ IVR8.SolveRequest:
         $ref: '#/IVR8.TaskSequence'
     solveType:
       type: string
-      enum: ["Optimise", "Evaluate", "ReOptimise"]
+      enum: ["Optimise", "Evaluate", "ReOptimise", "ExperimentalOptimise"]
       default: "Optimise"
    
 IVR8.CachedModel:
