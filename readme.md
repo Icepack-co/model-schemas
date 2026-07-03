@@ -18,15 +18,16 @@ All schemas are described in a fair bit of detail in our [documentation](https:/
 
 Model | Group | Comment
 --- |  --- | ---
-problem | base | [Pbf wrapper](https://docs.icepack.ai/model-overview/problem_envelope/) for ALL models submitted to the api
-ns3-tbfvuwtge2iq | network-sourcing | Target model for [sourcing models]((https://docs.icepack.ai/ns3/))
-ivrdata-o43e0dvs78zq | data-upload | Target upload schema for caching [data]((https://docs.icepack.ai/ivr/ivrdata/)) on the API
-matrix-vyv95n7wchpl | network-data | Produces distance / time [matricies](https://docs.icepack.ai/distance-matrix/)
-tsp-mcvfz472gty6 | vehicle-router | Simple [TSP](https://docs.icepack.ai/classic-tsp/) model
-tsptw-kcxbievqo879 | vehicle-router | Simple [TSP with Time Windows](https://docs.icepack.ai/tsptw/) model
-cvrp-jkfdoctmp51n | vehicle-router | Capacitated [VRP](https://docs.icepack.ai/cvrp/) - nice for academic problems
-cvrptw-acyas3nzweqb	| vehicle-router | [CVRP](https://docs.icepack.ai/vcrptw/) with Time Windows - nice for academic problems
-ivr7-kt461v8eoaif	| vehicle-router | [IVR7](https://docs.icepack.ai/ivr/)
-ivr8-yni1c9k2swof	| vehicle-router | IVR7 + Compartments = [IVR8](https://docs.icepack.ai/ivr/)
-nvd-hap0j2y4zlm1 |  vehicle-router | [Sales rep](https://docs.icepack.ai/nvd/) periodic solver (ivr7-backed)
-isr-z4foi53qznrv | vehicle-router | [Street Router]() - used for high frequency stops where the bearing of travel in conjunction with visiting segments once is important. See the docs for more info.
+problem | base | [Problem Wrapper](https://docs.icepack.ai/model-overview/problem_envelope/) for ALL models submitted to the API.
+ns3-tbfvuwtge2iq | network-sourcing | Target for [Network Sourcing models](https://docs.icepack.ai/ns3/).
+ivrdata-o43e0dvs78zq | data-upload | Target upload schema for caching [data](https://docs.icepack.ai/ivr/ivrdata/) on the API.
+matrix-vyv95n7wchpl | network-data | Produces distance / time [matrices](https://docs.icepack.ai/distance-matrix/).
+tsp-mcvfz472gty6 | vehicle-router | Simple [TSP](https://docs.icepack.ai/classic-tsp/) model.
+tsptw-kcxbievqo879 | vehicle-router | Simple TSP + Time Windows = [TSPTW](https://docs.icepack.ai/tsptw/) model.
+cvrp-jkfdoctmp51n | vehicle-router | [Capacitated VRP](https://docs.icepack.ai/cvrp/) model - nice for academic problems.
+cvrptw-acyas3nzweqb	| vehicle-router | CVRP + Time Windows = [CVRPTW](https://docs.icepack.ai/vrp/cvrptw/) model - nice for academic problems.
+ivr7-kt461v8eoaif	| vehicle-router | Icepack Vehicle Routing Solver [IVR7](https://docs.icepack.ai/ivr/) model.
+ivr8-yni1c9k2swof	| vehicle-router | IVR7 + Compartments = [IVR8](https://docs.icepack.ai/ivr/) model.
+nvd-hap0j2y4zlm1 |  vehicle-router | [Periodic Sales Rep](https://docs.icepack.ai/nvd/) model (ivr7-backed). Used for periodic location visit planning.
+ndd-cmibu6krtqja |  vehicle-router | [Periodic Delivery](https://docs.icepack.ai/ndd/) model (ivr7-backed). Used for periodic delivery planning.
+isr-z4foi53qznrv | vehicle-router | [Street Router](https://docs.icepack.ai/isr/) model. Used for high frequency stops where the bearing of travel in conjunction with visiting segments once is important.
